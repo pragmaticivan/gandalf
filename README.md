@@ -1,6 +1,7 @@
 # Gandalf
 
-[![CircleCI](https://circleci.com/gh/pragmaticivan/gandalf.svg?style=svg)](https://circleci.com/gh/pragmaticivan/gandalf)
+[![CircleCI](https://circleci.com/gh/pragmaticivan/gandalf.svg?style=svg&circle-token=0da837341417ce07c7fcee52a2c98581973cd622)](https://circleci.com/gh/pragmaticivan/gandalf)
+[![Hex Version](https://img.shields.io/hexpm/v/gandalf.svg)](https://hex.pm/packages/gandalf)
 
 **TODO: Add description**
 

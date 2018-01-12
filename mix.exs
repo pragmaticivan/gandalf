@@ -14,7 +14,8 @@ defmodule Gandalf.MixProject do
       elixir: "> 1.5.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      preferred_cli_env: [gandalf: :test, "coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
+      preferred_cli_env: [gandalf: :test, "coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test, "coveralls.json": :test],
+      test_coverage: [tool: ExCoveralls],
       deps: deps()
     ]
   end
@@ -51,12 +52,12 @@ defmodule Gandalf.MixProject do
         "ecto.migrate",
         "test"
       ],
-      "coveralls.travis": [
+      "coveralls.json": [
         "ecto.drop --quiet",
         "ecto.create --quiet",
         "gandalf.gen.migration",
         "ecto.migrate",
-        "coveralls.travis"
+        "coveralls.json"
       ]
     ]
   end
