@@ -10,6 +10,7 @@ config :gandalf, Gandalf.DB.Test.Repo,
   username: "postgres",
   password: "postgres",
   pool: Ecto.Adapters.SQL.Sandbox,
+  loggers: [],
   priv: "priv/temp/gandalf_db_test"
 
 config :gandalf,

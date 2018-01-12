@@ -1,6 +1,7 @@
 defmodule Gandalf.OAuth2Test do
   use ExUnit.Case
   use Gandalf.RepoBase
+  use Gandalf.DB.Test.DataCase
   import Gandalf.Factory
   alias Gandalf.OAuth2
   alias Gandalf.Error.SuspiciousActivity, as: SuspiciousActivityError

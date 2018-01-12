@@ -27,3 +27,5 @@ gandalf-*.tar
 .DS_Store
 
 .elixir_ls
+
+docker-compose.yml

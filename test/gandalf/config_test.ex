@@ -1,5 +1,6 @@
 defmodule Gandalf.ConfigTest do
   use ExUnit.Case
+  use Gandalf.DB.Test.DataCase
   alias Gandalf.Config
 
   test ".repo" do
