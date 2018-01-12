@@ -3,16 +3,18 @@ defmodule Gandalf do
   Documentation for Gandalf.
   """
 
-  @doc """
-  Hello world.
+  use Application
 
-  ## Examples
+  @repo Application.get_env(:gandalf, :repo)
 
-      iex> Gandalf.hello
-      :world
+  def start(_type, _args) do
+    import Supervisor.Spec
 
-  """
-  def hello do
-    :world
+    children = [
+      supervisor(@repo, [])
+    ]
+
+    opts = [strategy: :one_for_one, name: Gandalf.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end

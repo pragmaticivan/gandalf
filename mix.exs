@@ -34,6 +34,7 @@ defmodule Gandalf.MixProject do
   defp deps do
     [
       {:ecto, "~> 2.2"},
+      {:plug, "~> 1.3"},
       {:postgrex, "~> 0.13", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false}
@@ -41,7 +42,7 @@ defmodule Gandalf.MixProject do
   end
 
   defp aliases do
-    [test: ["ecto.drop --quiet", "ecto.create --quiet", "gandalf.db.gen.migration", "ecto.migrate", "test"]]
+    [test: ["ecto.drop --quiet", "ecto.create --quiet", "gandalf.gen.migration", "ecto.migrate", "test"]]
   end
 
   defp description do

@@ -10,29 +10,50 @@ config :gandalf, Gandalf.DB.Test.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   priv: "priv/temp/gandalf_db_test"
 
-# This configuration is loaded before any dependency and is restricted
-# to this project. If another project depends on this project, this
-# file won't be loaded nor affect the parent project. For this reason,
-# if you want to provide default values for your application for
-# 3rd-party users, it should be done in your "mix.exs" file.
 
-# You can configure your application as:
-#
-#     config :gandalf, key: :value
-#
-# and access this configuration in your application as:
-#
-#     Application.get_env(:gandalf, :key)
-#
-# You can also configure a 3rd-party app:
-#
-#     config :logger, level: :info
-#
+config :gandalf, Gandalf.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "gandalf_dev",
+  hostname: "localhost",
+  pool_size: 10
 
-# It is also possible to import configuration files, relative to this
-# directory. For example, you can emulate configuration per environment
-# by uncommenting the line below and defining dev.exs, test.exs and such.
-# Configuration from the imported file will override the ones defined
-# here (which is why it is important to import them last).
-#
-#     import_config "#{Mix.env}.exs"
+config :gandalf,
+  ecto_repos: [Gandalf.Repo],
+  repo: Gandalf.Repo,
+  resource_owner: Gandalf.Model.User,
+  token_store: Gandalf.Model.Token,
+  client: Gandalf.Model.Client,
+  app: Gandalf.Model.App,
+  expires_in: %{
+    access_token: 3600,
+    refresh_token: 24 * 3600,
+    authorization_code: 300,
+    session_token: 30 * 24 * 3600
+  },
+  grant_types: %{
+    authorization_code: Gandalf.GrantType.AuthorizationCode,
+    client_credentials: Gandalf.GrantType.ClientCredentials,
+    password: Gandalf.GrantType.Password,
+    refresh_token: Gandalf.GrantType.RefreshToken
+  },
+  auth_strategies: %{
+    headers: %{
+      "authorization" => [
+        {~r/Basic ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Basic},
+        {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer},
+      ],
+      "x-api-token" => [
+        {~r/([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}
+      ]
+    },
+    query_params: %{
+      "access_token" => Gandalf.Authentication.Bearer
+    },
+    sessions: %{
+      "session_token" => Gandalf.Authentication.Session
+    }
+  },
+  scopes: ~w(read write session),
+  renderer: Gandalf.Renderer.RestApi
