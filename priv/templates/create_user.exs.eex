@@ -6,6 +6,8 @@ defmodule <%= module_prefix %>.Repo.Migrations.Gandalf.CreateUser do
       add :id, :uuid, primary_key: true
       add :email, :string
       add :password, :string
+      add :settings, :map
+      add :priv_settings, :map
 
       timestamps()
     end

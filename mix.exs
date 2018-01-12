@@ -16,6 +16,10 @@ defmodule Gandalf.MixProject do
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [gandalf: :test, "coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test, "coveralls.json": :test],
       test_coverage: [tool: ExCoveralls],
+      dialyzer: [plt_add_deps: :transitive,
+                 plt_add_apps: [:mix],
+                 flags: [:race_conditions, :no_opaque],
+      ],
       deps: deps()
     ]
   end
@@ -36,9 +40,15 @@ defmodule Gandalf.MixProject do
     [
       {:ecto, "~> 2.2"},
       {:plug, "~> 1.3"},
-      {:postgrex, "~> 0.13", optional: true},
+      {:comeonin, "~> 4.0"},
+      {:bcrypt_elixir, "~> 1.0"},
+      {:secure_random, "~> 0.5.1"},
+      {:poison, "~> 3.1"},
+      {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
+      {:postgrex, "~> 0.13.3", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 0.8.10", only: [:dev, :test], runtime: false},
+      {:ex_machina, "~> 2.1", only: :test},
       {:excoveralls, "~> 0.8", only: :test}
     ]
   end

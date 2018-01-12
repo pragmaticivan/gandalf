@@ -7,7 +7,7 @@ defmodule <%= module_prefix %>.Repo.Migrations.Gandalf.CreateToken do
       add :name, :string
       add :value, :string
       add :expires_at, :integer
-      add :details, :jsonb
+      add :details, :map
       add :user_id, references(:users, on_delete: :delete_all, type: :uuid)
 
       timestamps()
