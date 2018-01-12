@@ -14,7 +14,7 @@ by adding `gandalf` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:gandalf, "~> 0.1.0"}
+    {:gandalf, "~> 0.3.0"}
   ]
 end
 ```
