@@ -11,7 +11,7 @@ defmodule Gandalf.MixProject do
       aliases: aliases(),
       package: package(),
       version: @version,
-      elixir: "~> 1.6-dev",
+      elixir: "> 1.5.3",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [gandalf: :test, "coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
