@@ -1,5 +1,7 @@
 # Gandalf
 
+[![CircleCI](https://circleci.com/gh/pragmaticivan/gandalf.svg?style=svg)](https://circleci.com/gh/pragmaticivan/gandalf)
+
 **TODO: Add description**
 
 ## Installation
