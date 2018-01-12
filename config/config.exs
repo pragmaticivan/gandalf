@@ -7,20 +7,14 @@ config :gandalf, ecto_repos: [Gandalf.DB.Test.Repo]
 config :gandalf, Gandalf.DB.Test.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "gandalf_db_test",
+  username: "postgres",
+  password: "postgres",
   pool: Ecto.Adapters.SQL.Sandbox,
   priv: "priv/temp/gandalf_db_test"
 
-config :gandalf, Gandalf.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "gandalf_dev",
-  hostname: "localhost",
-  pool_size: 10
-
 config :gandalf,
-  ecto_repos: [Gandalf.Repo],
-  repo: Gandalf.Repo,
+  ecto_repos: [Gandalf.DB.Test.Repo],
+  repo: Gandalf.DB.Test.Repo,
   resource_owner: Gandalf.Model.User,
   token_store: Gandalf.Model.Token,
   client: Gandalf.Model.Client,
