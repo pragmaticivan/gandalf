@@ -42,7 +42,15 @@ defmodule Gandalf.MixProject do
   end
 
   defp aliases do
-    [test: ["ecto.drop --quiet", "ecto.create --quiet", "gandalf.gen.migration", "ecto.migrate", "test"]]
+    [
+      test: [
+        "ecto.drop --quiet",
+        "ecto.create --quiet",
+        "gandalf.gen.migration",
+        "ecto.migrate",
+        "test"
+      ]
+    ]
   end
 
   defp description do

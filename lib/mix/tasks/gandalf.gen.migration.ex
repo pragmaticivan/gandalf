@@ -20,6 +20,7 @@ defmodule Mix.Tasks.Gandalf.Gen.Migration do
       path = migrations_path(repo)
 
       create_directory(path)
+
       Enum.each(
         [
           "create_user",
@@ -41,7 +42,7 @@ defmodule Mix.Tasks.Gandalf.Gen.Migration do
     generated_file = EEx.eval_file(source_path, module_prefix: app_module())
     target_file = Path.join(path, "#{timestamp()}_gandalf_#{file}.exs")
     create_file(target_file, generated_file)
-    :timer.sleep(1000);
+    :timer.sleep(1000)
   end
 
   defp app_module do

@@ -34,25 +34,22 @@ defmodule Gandalf.Authentication.Token do
     )
   end
 
-  defp token_check(nil, _),
-    do: AuthenticationError.invalid_token("Token not found.")
+  defp token_check(nil, _), do: AuthenticationError.invalid_token("Token not found.")
+
   defp token_check(token, required_scopes) do
     if @token_store.is_expired?(token) do
       AuthenticationError.invalid_token("Token expired.")
     else
       scopes = Gandalf.Utils.String.comma_split(token.details["scope"])
+
       if Gandalf.Utils.List.subset?(scopes, required_scopes) do
-        resource_owner_check(
-          @repo.get(@resource_owner, token.user_id)
-        )
+        resource_owner_check(@repo.get(@resource_owner, token.user_id))
       else
         AuthenticationError.insufficient_scope(required_scopes)
       end
     end
   end
 
-  defp resource_owner_check(nil),
-    do: AuthenticationError.invalid_token("User not found.")
-  defp resource_owner_check(resource_owner),
-    do: {:ok, resource_owner}
+  defp resource_owner_check(nil), do: AuthenticationError.invalid_token("User not found.")
+  defp resource_owner_check(resource_owner), do: {:ok, resource_owner}
 end

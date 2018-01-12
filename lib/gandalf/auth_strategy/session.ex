@@ -25,6 +25,7 @@ defmodule Gandalf.AuthStrategy.Session do
   defp authenticate_via_session(conn, session_auth, required_scopes) do
     Enum.find_value(session_auth, fn {key, module} ->
       session_value = conn |> fetch_session |> get_session(key)
+
       if !is_nil(session_value) do
         module.authenticate(session_value, required_scopes)
       end

@@ -24,14 +24,11 @@ defmodule Gandalf.Authentication.Session do
       Gandalf.Authentication.Session.authenticate("st123456789", [])
   """
   def authenticate(session_token, required_scopes) do
-    case TokenAuthentication.authenticate(
-      {"session_token", session_token}, required_scopes) do
-        {:ok, user} -> {:ok, user}
-        {:error, errors, status} -> {:error,
-          Map.put(errors, :headers, error_headers()), status}
+    case TokenAuthentication.authenticate({"session_token", session_token}, required_scopes) do
+      {:ok, user} -> {:ok, user}
+      {:error, errors, status} -> {:error, Map.put(errors, :headers, error_headers()), status}
     end
   end
 
-  defp error_headers,
-    do: [%{"www-authenticate" => "Cookie realm=\"gandalf\""}]
+  defp error_headers, do: [%{"www-authenticate" => "Cookie realm=\"gandalf\""}]
 end

@@ -13,6 +13,6 @@ defmodule Gandalf.Authentication do
   This function returns a `{:ok, Gandalf.Model.User struct}` or
   `{:error, Map, :http_status_code}`.
   """
-  @callback authenticate(any, List) :: {:ok, Application.get_env(:gandalf,
-    :resource_owner)} | {:error, Map, Atom}
+  @callback authenticate(any, List) ::
+              {:ok, Application.get_env(:gandalf, :resource_owner)} | {:error, Map, Atom}
 end

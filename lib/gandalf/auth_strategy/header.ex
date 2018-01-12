@@ -26,14 +26,13 @@ defmodule Gandalf.AuthStrategy.Header do
     Enum.find_value(header_auth, fn {key, authentications} ->
       case List.first(get_req_header(conn, key)) do
         nil -> nil
-        header_val -> authenticate_via_header(authentications, header_val,
-         required_scopes)
+        header_val -> authenticate_via_header(authentications, header_val, required_scopes)
       end
     end)
   end
 
   defp authenticate_via_header(authentications, header_val, required_scopes) do
-    Enum.find_value(authentications, fn(tuple) ->
+    Enum.find_value(authentications, fn tuple ->
       authenticate_via_header_val(tuple, header_val, required_scopes)
     end)
   end

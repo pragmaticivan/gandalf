@@ -10,7 +10,6 @@ config :gandalf, Gandalf.DB.Test.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   priv: "priv/temp/gandalf_db_test"
 
-
 config :gandalf, Gandalf.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
@@ -42,7 +41,7 @@ config :gandalf,
     headers: %{
       "authorization" => [
         {~r/Basic ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Basic},
-        {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer},
+        {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}
       ],
       "x-api-token" => [
         {~r/([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}

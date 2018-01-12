@@ -25,6 +25,7 @@ defmodule Gandalf.Plug.SilentLoad do
 
   defp response_conn_with(conn, nil), do: conn
   defp response_conn_with(conn, {:error, _, _}), do: conn
-  defp response_conn_with(conn, {:ok, current_user}), do: assign(conn,
-    :current_user, current_user)
+
+  defp response_conn_with(conn, {:ok, current_user}),
+    do: assign(conn, :current_user, current_user)
 end
