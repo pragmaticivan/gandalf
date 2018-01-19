@@ -51,3 +51,6 @@ config :gandalf,
   },
   scopes: ~w(read write session),
   renderer: Gandalf.Renderer.RestApi
+
+config :gandalf,
+  app_authorization: Gandalf.Stub.AppAuthorization

@@ -42,6 +42,7 @@ defmodule Mix.Tasks.Gandalf.Gen.Migration do
     generated_file = EEx.eval_file(source_path, module_prefix: app_module())
     target_file = Path.join(path, "#{timestamp()}_gandalf_#{file}.exs")
     create_file(target_file, generated_file)
+    :timer.sleep(1000)
   end
 
   defp app_module do
@@ -53,8 +54,7 @@ defmodule Mix.Tasks.Gandalf.Gen.Migration do
 
   defp timestamp do
     {{y, m, d}, {hh, mm, ss}} = :calendar.universal_time()
-    {_megasec, _sec, microsec} = :os.timestamp
-    "#{y}#{pad(m)}#{pad(d)}#{pad(hh)}#{pad(mm)}#{pad(ss)}#{microsec}"
+    "#{y}#{pad(m)}#{pad(d)}#{pad(hh)}#{pad(mm)}#{pad(ss)}"
   end
 
   defp pad(i) when i < 10, do: <<?0, ?0 + i>>
