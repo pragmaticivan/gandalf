@@ -17,10 +17,15 @@ defmodule Gandalf.OAuth2Test do
   test ".grant_app_authorization delegates with right params" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
-    params = %{"client_id" => client.id, "redirect_uri" => @redirect_uri,
-      "scope" => @scopes}
+
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    params = %{"client_id" => client.id, "redirect_uri" => @redirect_uri, "scope" => @scopes}
 
     OAuth2.grant_app_authorization(resource_owner, params)
     assert_receive :ok
@@ -29,10 +34,15 @@ defmodule Gandalf.OAuth2Test do
   test ".authorize_app delegates with right params" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
-    params = %{"client_id" => client.id, "redirect_uri" => @redirect_uri,
-      "scope" => @scopes}
+
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    params = %{"client_id" => client.id, "redirect_uri" => @redirect_uri, "scope" => @scopes}
 
     OAuth2.authorize_app(resource_owner, params)
     assert_receive :ok
@@ -41,16 +51,31 @@ defmodule Gandalf.OAuth2Test do
   test ".revoke_app_authorization delegates with right params" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-                    redirect_uri: @redirect_uri)
-    app = insert(:app, user_id: resource_owner.id, client_id: client.id,
-                 scope: @scopes)
-    insert(:access_token, user_id: resource_owner.id, details: %{
-      client_id: client.id
-    })
-    insert(:refresh_token, user_id: resource_owner.id, details: %{
-      client_id: client.id
-    })
+
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    app = insert(:app, user_id: resource_owner.id, client_id: client.id, scope: @scopes)
+
+    insert(
+      :access_token,
+      user_id: resource_owner.id,
+      details: %{
+        client_id: client.id
+      }
+    )
+
+    insert(
+      :refresh_token,
+      user_id: resource_owner.id,
+      details: %{
+        client_id: client.id
+      }
+    )
 
     OAuth2.revoke_app_authorization(resource_owner, %{"id" => app.id})
     assert_receive :ok

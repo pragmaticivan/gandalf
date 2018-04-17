@@ -13,10 +13,20 @@ defmodule Gandalf.Authorization.AppTest do
   test "resource_owner authorize app for a client" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
-    params = %{"user" => resource_owner, "client_id" => client.id,
-      "redirect_uri" => @redirect_uri, "scope" => @scopes}
+
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    params = %{
+      "user" => resource_owner,
+      "client_id" => client.id,
+      "redirect_uri" => @redirect_uri,
+      "scope" => @scopes
+    }
 
     app = AppAuthorization.grant(params)
 
@@ -27,13 +37,23 @@ defmodule Gandalf.Authorization.AppTest do
     new_scopes = "read,write"
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
-    app = insert(:app, user_id: resource_owner.id, client_id: client.id,
-      scope: @scopes)
 
-    params = %{"user" => resource_owner, "client_id" => client.id,
-      "redirect_uri" => @redirect_uri, "scope" => new_scopes}
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    app = insert(:app, user_id: resource_owner.id, client_id: client.id, scope: @scopes)
+
+    params = %{
+      "user" => resource_owner,
+      "client_id" => client.id,
+      "redirect_uri" => @redirect_uri,
+      "scope" => new_scopes
+    }
+
     result = AppAuthorization.grant(params)
 
     same_app = Map.get(result, "app")
@@ -44,13 +64,23 @@ defmodule Gandalf.Authorization.AppTest do
   test "resource_owner re-authorize app with old scopes for a client" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
-    app = insert(:app, user_id: resource_owner.id, client_id: client.id,
-      scope: @scopes)
 
-    params = %{"user" => resource_owner, "client_id" => client.id,
-      "redirect_uri" => @redirect_uri, "scope" => @scopes}
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    app = insert(:app, user_id: resource_owner.id, client_id: client.id, scope: @scopes)
+
+    params = %{
+      "user" => resource_owner,
+      "client_id" => client.id,
+      "redirect_uri" => @redirect_uri,
+      "scope" => @scopes
+    }
+
     result = AppAuthorization.grant(params)
 
     same_app = Map.get(result, "app")
@@ -61,11 +91,21 @@ defmodule Gandalf.Authorization.AppTest do
   test "does not allow to change redirect_uri when authorize app" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
 
-    params = %{"user" => resource_owner, "client_id" => client.id,
-      "redirect_uri" => "https://xyz.com/nx", "scope" => @scopes}
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    params = %{
+      "user" => resource_owner,
+      "client_id" => client.id,
+      "redirect_uri" => "https://xyz.com/nx",
+      "scope" => @scopes
+    }
+
     {:error, _, http_status_code} = AppAuthorization.grant(params)
 
     assert http_status_code == :unprocessable_entity
@@ -74,19 +114,35 @@ defmodule Gandalf.Authorization.AppTest do
   test "deletes app and user's all client tokens" do
     resource_owner = insert(:user)
     client_owner = insert(:user)
-    client = insert(:client, user_id: client_owner.id,
-      redirect_uri: @redirect_uri)
-    app = insert(:app, user_id: resource_owner.id, client_id: client.id,
-      scope: @scopes)
-    insert(:access_token, user_id: resource_owner.id, details: %{
-      client_id: client.id
-    })
-    insert(:refresh_token, user_id: resource_owner.id, details: %{
-      client_id: client.id
-    })
+
+    client =
+      insert(
+        :client,
+        user_id: client_owner.id,
+        redirect_uri: @redirect_uri
+      )
+
+    app = insert(:app, user_id: resource_owner.id, client_id: client.id, scope: @scopes)
+
+    insert(
+      :access_token,
+      user_id: resource_owner.id,
+      details: %{
+        client_id: client.id
+      }
+    )
+
+    insert(
+      :refresh_token,
+      user_id: resource_owner.id,
+      details: %{
+        client_id: client.id
+      }
+    )
 
     params = %{"user" => resource_owner, "id" => app.id}
     AppAuthorization.revoke(params)
+
     tokens =
       @token_store
       |> where(user_id: ^resource_owner.id)

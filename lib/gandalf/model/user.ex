@@ -11,13 +11,13 @@ defmodule Gandalf.Model.User do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "users" do
-    field :email, :string
-    field :password, :string
-    field :settings, :map
-    field :priv_settings, :map
-    has_many :clients, Client
-    has_many :tokens, Token
-    has_many :apps, App
+    field(:email, :string)
+    field(:password, :string)
+    field(:settings, :map)
+    field(:priv_settings, :map)
+    has_many(:clients, Client)
+    has_many(:tokens, Token)
+    has_many(:apps, App)
 
     timestamps()
   end
@@ -32,8 +32,7 @@ defmodule Gandalf.Model.User do
     |> cast(params, [:email, :password, :settings])
     |> validate_required([:email, :password])
     |> validate_length(:email, min: 6, max: 255)
-    |> validate_format(:email,
-         ~r/\A([\w+\-]\.?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
+    |> validate_format(:email, ~r/\A([\w+\-]\.?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
   end
 
   def settings_changeset(model, params \\ :empty) do
@@ -64,6 +63,7 @@ defmodule Gandalf.Model.User do
     case model_changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(model_changeset, :password, CryptUtil.salt_password(pass))
+
       _ ->
         model_changeset
     end
@@ -72,8 +72,8 @@ defmodule Gandalf.Model.User do
   defp put_unconfirmed_flag(model_changeset) do
     case model_changeset do
       %Ecto.Changeset{valid?: true, changes: %{settings: user_settings}} ->
-        put_change(model_changeset, :settings, Map.put(user_settings,
-          :confirmed, false))
+        put_change(model_changeset, :settings, Map.put(user_settings, :confirmed, false))
+
       _ ->
         model_changeset
     end

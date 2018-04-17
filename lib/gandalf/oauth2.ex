@@ -61,19 +61,36 @@ defmodule Gandalf.OAuth2 do
         "scope" => "read,write"
       %})
   """
-  def grant_app_authorization(user, %{"client_id" => client_id, "redirect_uri" => redirect_uri, "scope" => scope}) do
-    app_authorization().grant(%{"user" => user, "client_id" => client_id,
-      "redirect_uri" => redirect_uri, "scope" => scope})
+  def grant_app_authorization(user, %{
+        "client_id" => client_id,
+        "redirect_uri" => redirect_uri,
+        "scope" => scope
+      }) do
+    app_authorization().grant(%{
+      "user" => user,
+      "client_id" => client_id,
+      "redirect_uri" => redirect_uri,
+      "scope" => scope
+    })
   end
 
   @doc """
   Warning: Deprecated use grant_app_authorization/2.
   """
-  def authorize_app(user, %{"client_id" => client_id, "redirect_uri" => redirect_uri, "scope" => scope}) do
+  def authorize_app(user, %{
+        "client_id" => client_id,
+        "redirect_uri" => redirect_uri,
+        "scope" => scope
+      }) do
     require Logger
     Logger.warn("Warning: Deprecated use OAuth2.grant_app_authorization/2")
-    app_authorization().grant(%{"user" => user, "client_id" => client_id,
-      "redirect_uri" => redirect_uri, "scope" => scope})
+
+    app_authorization().grant(%{
+      "user" => user,
+      "client_id" => client_id,
+      "redirect_uri" => redirect_uri,
+      "scope" => scope
+    })
   end
 
   @doc """

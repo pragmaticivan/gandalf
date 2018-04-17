@@ -46,12 +46,12 @@ defmodule Gandalf.GrantType.Base do
   defp scopes_check(scopes) do
     valid_scopes = scopes()
     desired_scopes = Gandalf.Utils.String.comma_split(scopes)
-    Enum.each(desired_scopes, fn(scope) -> scope_check(valid_scopes, scope) end)
+    Enum.each(desired_scopes, fn scope -> scope_check(valid_scopes, scope) end)
   end
+
   defp scope_check(valid_scopes, scope) do
     unless Enum.member?(valid_scopes, scope) do
-      raise Gandalf.Error.SuspiciousActivity,
-        message: "Scope: #{scope} is not supported!"
+      raise Gandalf.Error.SuspiciousActivity, message: "Scope: #{scope} is not supported!"
     end
   end
 
@@ -67,28 +67,35 @@ defmodule Gandalf.GrantType.Base do
     }
   end
 
-  defp put_refresh_token?(token_params, true),
-    do: put_refresh_token(token_params)
-  defp put_refresh_token?(token_params, _),
-    do: token_params
+  defp put_refresh_token?(token_params, true), do: put_refresh_token(token_params)
+  defp put_refresh_token?(token_params, _), do: token_params
+
   defp put_refresh_token(token_params) do
-    refresh_token_changeset = @token_store.refresh_token_changeset(
-      %@token_store{}, token_params
-    )
+    refresh_token_changeset =
+      @token_store.refresh_token_changeset(
+        %@token_store{},
+        token_params
+      )
+
     case repo().insert(refresh_token_changeset) do
       {:ok, refresh_token} ->
-        token_params |> Map.merge(%{details: Map.put(token_params[:details],
-          :refresh_token, refresh_token.value)}
-        )
+        token_params
+        |> Map.merge(%{
+          details: Map.put(token_params[:details], :refresh_token, refresh_token.value)
+        })
+
       :error ->
         token_params
     end
   end
 
   defp create_access_token(token_params) do
-    access_token_changeset = @token_store.access_token_changeset(
-      %@token_store{}, token_params
-    )
+    access_token_changeset =
+      @token_store.access_token_changeset(
+        %@token_store{},
+        token_params
+      )
+
     case repo().insert(access_token_changeset) do
       {:ok, access_token} -> access_token
     end

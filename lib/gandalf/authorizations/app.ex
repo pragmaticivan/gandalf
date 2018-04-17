@@ -42,8 +42,13 @@ defmodule Gandalf.Authorization.App do
     app = repo().get_by!(@app, id: id, user_id: user.id)
     repo().delete!(app)
 
-    query = (from t in @token_store, where: t.user_id == ^app.user_id and
-      fragment("?->>'client_id' = ?", t.details, ^app.client_id))
+    query =
+      from(
+        t in @token_store,
+        where:
+          t.user_id == ^app.user_id and fragment("?->>'client_id' = ?", t.details, ^app.client_id)
+      )
+
     repo().delete_all(query)
   end
 
@@ -51,6 +56,7 @@ defmodule Gandalf.Authorization.App do
     case repo().get_by(@client, id: client_id, redirect_uri: redirect_uri) do
       nil ->
         {:error, %{invalid_client: "Client not found"}, :unprocessable_entity}
+
       client ->
         Map.put(params, "client", client)
     end
@@ -59,12 +65,16 @@ defmodule Gandalf.Authorization.App do
   defp update_or_create_app({:error, errors, status}) do
     {:error, errors, status}
   end
-  defp update_or_create_app(%{"user" => user, "client_id" => client_id, "scope" => scope} = params) do
+
+  defp update_or_create_app(
+         %{"user" => user, "client_id" => client_id, "scope" => scope} = params
+       ) do
     app =
       case repo().get_by(@app, user_id: user.id, client_id: client_id) do
         nil -> create_app(params)
         app -> update_app_scopes({app, scope})
       end
+
     Map.put(params, "app", app)
   end
 
@@ -72,10 +82,11 @@ defmodule Gandalf.Authorization.App do
     if app.scope != scope do
       scope =
         scope
-        |> Gandalf.Utils.String.comma_split
+        |> Gandalf.Utils.String.comma_split()
         |> Enum.concat(Gandalf.Utils.String.comma_split(app.scope))
         |> Enum.uniq()
-      scope = scopes() -- (scopes() -- scope)
+
+      scope = scopes() -- scopes() -- scope
       repo().update!(@app.changeset(app, %{scope: Enum.join(scope, ",")}))
     else
       app
@@ -83,26 +94,31 @@ defmodule Gandalf.Authorization.App do
   end
 
   defp create_app(%{"user" => user, "client_id" => client_id, "scope" => scope}) do
-    changeset = @app.changeset(%@app{}, %{
-      user_id: user.id,
-      client_id: client_id,
-      scope: scope
-    })
+    changeset =
+      @app.changeset(%@app{}, %{
+        user_id: user.id,
+        client_id: client_id,
+        scope: scope
+      })
+
     repo().insert!(changeset)
   end
 
   defp create_token({:error, errors, status}) do
     {:error, errors, status}
   end
+
   defp create_token(%{"user" => user, "client" => client, "app" => app} = params) do
-    changeset = @token_store.authorization_code_changeset(%@token_store{}, %{
-      user_id: user.id,
-      details: %{
-        client_id: client.id,
-        redirect_uri: client.redirect_uri,
-        scope: app.scope
-      }
-    })
+    changeset =
+      @token_store.authorization_code_changeset(%@token_store{}, %{
+        user_id: user.id,
+        details: %{
+          client_id: client.id,
+          redirect_uri: client.redirect_uri,
+          scope: app.scope
+        }
+      })
+
     Map.put(params, "token", repo().insert!(changeset))
   end
 end

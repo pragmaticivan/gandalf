@@ -13,11 +13,11 @@ defmodule Gandalf.Model.Token do
   @foreign_key_type :binary_id
 
   schema "tokens" do
-    field :name, :string
-    field :value, :string
-    field :expires_at, :integer
-    field :details, :map
-    belongs_to :user, User
+    field(:name, :string)
+    field(:value, :string)
+    field(:expires_at, :integer)
+    field(:details, :map)
+    belongs_to(:user, User)
 
     timestamps()
   end
@@ -69,7 +69,7 @@ defmodule Gandalf.Model.Token do
   end
 
   defp put_token_value(model_changeset) do
-    put_change(model_changeset, :value, CryptUtil.generate_token)
+    put_change(model_changeset, :value, CryptUtil.generate_token())
   end
 
   defp put_token_name(model_changeset, name) do

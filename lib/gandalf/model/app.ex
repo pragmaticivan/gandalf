@@ -11,9 +11,9 @@ defmodule Gandalf.Model.App do
   @foreign_key_type :binary_id
 
   schema "apps" do
-    field :scope, :string
-    belongs_to :client, Client
-    belongs_to :user, User
+    field(:scope, :string)
+    belongs_to(:client, Client)
+    belongs_to(:user, User)
 
     timestamps()
   end

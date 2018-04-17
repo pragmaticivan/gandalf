@@ -14,11 +14,19 @@ defmodule Gandalf.MixProject do
       elixir: "> 1.5.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      preferred_cli_env: [gandalf: :test, "coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test, "coveralls.json": :test],
+      preferred_cli_env: [
+        gandalf: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "coveralls.json": :test
+      ],
       test_coverage: [tool: ExCoveralls],
-      dialyzer: [plt_add_deps: :transitive,
-                 plt_add_apps: [:mix],
-                 flags: [:race_conditions, :no_opaque],
+      dialyzer: [
+        plt_add_deps: :transitive,
+        plt_add_apps: [:mix],
+        flags: [:race_conditions, :no_opaque]
       ],
       deps: deps()
     ]

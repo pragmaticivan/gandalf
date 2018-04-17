@@ -17,7 +17,7 @@ defmodule Gandalf.Factory do
   def client_factory do
     %@client{
       name: sequence(:name, &"client#{&1}"),
-      secret: SecureRandom.urlsafe_base64,
+      secret: SecureRandom.urlsafe_base64(),
       redirect_uri: "https://example.com/oauth2-redirect-path",
       settings: %{
         name: "example",
@@ -42,7 +42,7 @@ defmodule Gandalf.Factory do
       expires_at: :os.system_time(:seconds) + 3600,
       details: %{
         scope: "read",
-        grant_type: "authorization_code",
+        grant_type: "authorization_code"
       }
     }
   end
@@ -66,7 +66,7 @@ defmodule Gandalf.Factory do
       expires_at: :os.system_time(:seconds) + 900,
       details: %{
         scope: "read",
-        grant_type: "password",
+        grant_type: "password"
       }
     }
   end

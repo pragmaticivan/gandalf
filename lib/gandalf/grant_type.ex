@@ -13,6 +13,5 @@ defmodule Gandalf.GrantType do
   This function returns a `{:ok, Gandalf.Model.Token struct}` or
   `{:error, Map, :http_status_code}`.
   """
-  @callback authorize(any) ::
-    {:ok, Gandalf.Token} | {:error, Map, Atom}
+  @callback authorize(any) :: {:ok, Gandalf.Token} | {:error, Map, Atom}
 end

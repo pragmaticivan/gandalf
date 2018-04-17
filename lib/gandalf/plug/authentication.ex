@@ -54,8 +54,8 @@ defmodule Gandalf.Plug.Authentication do
     conn
     |> put_resp_header("www-authenticate", "Bearer realm=\"gandalf\"")
     |> @renderer.render(:forbidden, %{
-         errors: %{details: "Resource access requires authentication!"}
-       })
+      errors: %{details: "Resource access requires authentication!"}
+    })
     |> halt
   end
 

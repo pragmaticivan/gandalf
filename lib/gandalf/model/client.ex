@@ -12,13 +12,13 @@ defmodule Gandalf.Model.Client do
   @foreign_key_type :binary_id
 
   schema "clients" do
-    field :name, :string
-    field :secret, :string
-    field :redirect_uri, :string
-    field :settings, :map
-    field :priv_settings, :map
-    belongs_to :user, User
-    has_many :apps, App
+    field(:name, :string)
+    field(:secret, :string)
+    field(:redirect_uri, :string)
+    field(:settings, :map)
+    field(:priv_settings, :map)
+    belongs_to(:user, User)
+    has_many(:apps, App)
 
     timestamps()
   end
@@ -39,6 +39,6 @@ defmodule Gandalf.Model.Client do
   end
 
   defp put_secret(model_changeset) do
-    put_change(model_changeset, :secret, CryptUtil.generate_token)
+    put_change(model_changeset, :secret, CryptUtil.generate_token())
   end
 end

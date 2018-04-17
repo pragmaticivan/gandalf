@@ -8,7 +8,7 @@ defmodule Gandalf.Utils.List do
   """
   def subset?(super_list, list) do
     list
-    |> Enum.find(fn(item) -> !Enum.member?(super_list, item) end)
+    |> Enum.find(fn item -> !Enum.member?(super_list, item) end)
     |> is_nil
   end
 end

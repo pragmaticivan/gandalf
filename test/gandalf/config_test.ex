@@ -22,6 +22,7 @@ defmodule Gandalf.ConfigTest do
       password: Gandalf.GrantType.Password,
       refresh_token: Gandalf.GrantType.RefreshToken
     }
+
     assert grant_types == Config.grant_types()
   end
 
@@ -30,7 +31,7 @@ defmodule Gandalf.ConfigTest do
       headers: %{
         "authorization" => [
           {~r/Basic ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Basic},
-          {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer},
+          {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}
         ],
         "x-api-token" => [
           {~r/([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}
@@ -43,6 +44,7 @@ defmodule Gandalf.ConfigTest do
         "session_token" => Gandalf.Authentication.Session
       }
     }
+
     assert auth_strategies == Config.auth_strategies()
   end
 
@@ -50,12 +52,13 @@ defmodule Gandalf.ConfigTest do
     headers = %{
       "authorization" => [
         {~r/Basic ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Basic},
-        {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer},
+        {~r/Bearer ([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}
       ],
       "x-api-token" => [
         {~r/([a-zA-Z\-_\+=]+)/, Gandalf.Authentication.Bearer}
       ]
     }
+
     assert headers == Config.header_auth()
   end
 
@@ -63,6 +66,7 @@ defmodule Gandalf.ConfigTest do
     query_params = %{
       "access_token" => Gandalf.Authentication.Bearer
     }
+
     assert query_params == Config.query_params_auth()
   end
 
@@ -70,6 +74,7 @@ defmodule Gandalf.ConfigTest do
     session_auth = %{
       "session_token" => Gandalf.Authentication.Session
     }
+
     assert session_auth == Config.session_auth()
   end
 
@@ -80,6 +85,7 @@ defmodule Gandalf.ConfigTest do
       authorization_code: 300,
       session_token: 30 * 24 * 3600
     }
+
     assert expires_in == Config.expires_in()
   end
 

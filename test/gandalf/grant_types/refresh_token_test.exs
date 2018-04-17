@@ -11,8 +11,20 @@ defmodule Gandalf.GrantType.RefreshTokenTest do
     client_owner = insert(:user)
     client = insert(:client, user_id: client_owner.id)
     app = insert(:app, user_id: resource_owner.id, client_id: client.id)
-    token = insert(:refresh_token, user_id: resource_owner.id, details: %{client_id: client.id, scope: "read"})
-    params = %{"client_id" => client.id, "client_secret" => client.secret, "refresh_token" => token.value}
+
+    token =
+      insert(
+        :refresh_token,
+        user_id: resource_owner.id,
+        details: %{client_id: client.id, scope: "read"}
+      )
+
+    params = %{
+      "client_id" => client.id,
+      "client_secret" => client.secret,
+      "refresh_token" => token.value
+    }
+
     {:ok, [params: params, app: app]}
   end
 
@@ -22,7 +34,9 @@ defmodule Gandalf.GrantType.RefreshTokenTest do
     assert access_token.details[:grant_type] == "refresh_token"
   end
 
-  test "can not insert access_token more than one with a token with same refresh_token params", %{params: params} do
+  test "can not insert access_token more than one with a token with same refresh_token params", %{
+    params: params
+  } do
     RefreshTokenGrantType.authorize(params)
     {:error, _, http_status} = RefreshTokenGrantType.authorize(params)
     assert http_status == :unauthorized

@@ -1,4 +1,3 @@
-
 defmodule Gandalf.Renderer.RestApi do
   @moduledoc """
   An implementation for `Gandalf.Rederer` to render Gandalf errors in RestAPI
@@ -16,9 +15,13 @@ defmodule Gandalf.Renderer.RestApi do
   end
 
   defp merge_error_keys(%{errors: errors}) do
-    %{errors: Enum.reduce(errors, %{}, fn({key, val}, acc) ->
-      Map.update(acc, key, [val], &[val|&1])
-    end)}
+    %{
+      errors:
+        Enum.reduce(errors, %{}, fn {key, val}, acc ->
+          Map.update(acc, key, [val], &[val | &1])
+        end)
+    }
   end
+
   defp merge_error_keys(map), do: map
 end

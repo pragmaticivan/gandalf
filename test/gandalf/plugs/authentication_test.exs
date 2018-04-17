@@ -15,7 +15,7 @@ defmodule Gandalf.Plug.AuthenticationTest do
 
   @secret String.duplicate("abcdef0123456789", 8)
   @signing_opts Plug.Session.init(Keyword.put(@default_opts, :encrypt, false))
-  @opts AuthenticationPlug.init([scopes: ~w(read)])
+  @opts AuthenticationPlug.init(scopes: ~w(read))
 
   setup do
     {:ok, conn: Gandalf.ConnTest.build_conn()}
